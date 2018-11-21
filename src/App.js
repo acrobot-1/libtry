@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
-import LabelContainer from "./lib/components/LabelContainer";
-import SelectedLabels from "./lib/components/SelectedLabels";
-import AutoCompleteInput from "./lib/components/AutoCompleteInput";
+import LabelContainer from './lib/components/LabelContainer';
+import SelectedLabels from './lib/components/SelectedLabels';
+import AutoCompleteInput from './lib/components/AutoCompleteInput';
 
 export default class App extends PureComponent {
   constructor() {
@@ -12,10 +12,23 @@ export default class App extends PureComponent {
     };
     this.onChange = this.onChange.bind(this);
     this.onSelect = this.onSelect.bind(this);
+    this.onRemove = this.onRemove.bind(this);
+  }
+
+  get lastSelectedLabelsIndex() {
+    return this.state.selectedLabels.length - 1;
   }
 
   onChange(value) {
     this.setState({ value });
+  }
+
+  onRemove(arrayIndex) {
+    this.setState(prevState => {
+      const selectedLabels = prevState.selectedLabels.slice();
+      selectedLabels.splice(arrayIndex, 1);
+      return { selectedLabels };
+    });
   }
 
   onSelect({ value, id, title }) {
@@ -29,8 +42,14 @@ export default class App extends PureComponent {
   render() {
     return (
       <LabelContainer>
-        <SelectedLabels selectedLabels={this.state.selectedLabels} onRemove={() => console.log('WWWWOOOW')} />
-        <AutoCompleteInput onChange={this.onChange} onSelect={this.onSelect} value={this.state.value} />
+        <SelectedLabels selectedLabels={this.state.selectedLabels} onRemove={this.onRemove} />
+        <AutoCompleteInput
+          onChange={this.onChange}
+          onSelect={this.onSelect}
+          onRemove={this.onRemove}
+          lastSelectedLabelsIndex={this.lastSelectedLabelsIndex}
+          value={this.state.value}
+        />
       </LabelContainer>
     );
   }

@@ -9,7 +9,7 @@ const SelectedLabels = ({ selectedLabels, hasError, onRemove, removeText }) => {
     removeText,
   };
   return selectedLabels.map((label, index) => (
-    <Label key={index} value={label.value} title={label.title} {...nonMandatoryProps} />
+    <Label key={index} labelIndex={index} value={label.value} title={label.title} {...nonMandatoryProps} />
   ));
 };
 

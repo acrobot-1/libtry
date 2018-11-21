@@ -18,7 +18,7 @@ export default class Label extends PureComponent {
       >
         {this.props.value}
         {this.showRemoveButton && (
-          <button onClick={this.props.onRemove} className="remove-label">
+          <button onClick={() => this.props.onRemove(this.props.labelIndex)} className="remove-label">
             {this.removeText}
           </button>
         )}
@@ -33,4 +33,5 @@ Label.propTypes = {
   removeText: PropTypes.string,
   title: PropTypes.string,
   value: PropTypes.string.isRequired,
+  labelIndex: PropTypes.number,
 };

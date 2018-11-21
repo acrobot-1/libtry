@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { KEYS } from './constants';
-import { DebounceInput } from 'react-debounce-input';
 
 export default class AutoCompleteInput extends Component {
   constructor(props) {
     super(props);
     this.state = { suggestions: props.suggestions };
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.value !== prevProps.value) this.setState({ suggestions: this.props.suggestions });
   }
 
-  handleKeyDown = e => {
+  handleKeyDown(e) {
     if (this.props.delimiters.indexOf(e.keyCode) !== -1 && !e.shiftKey) {
       const selectedValue = this.props.value;
       this.props.onSelect({ value: selectedValue });
     }
-  };
+    if (e.keyCode === KEYS.BACKSPACE && this.props.value === '') {
+      this.props.onRemove && this.props.onRemove(this.props.lastSelectedLabelsIndex);
+    }
+  }
 
   render() {
     return (
@@ -57,9 +60,11 @@ AutoCompleteInput.propTypes = {
   delimiters: PropTypes.array,
   onChange: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
+  onRemove: PropTypes.func,
   placeholder: PropTypes.string,
   suggestions: PropTypes.array,
   value: PropTypes.string.isRequired,
+  lastSelectedLabelsIndex: PropTypes.number,
 };
 
 AutoCompleteInput.defaultProps = {
