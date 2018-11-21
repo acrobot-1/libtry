@@ -1,10 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import TextInput from "./lib/components/TextInput";
+import App from "./App";
 
-ReactDOM.render(
-  <div>
-    <TextInput />
-  </div>,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));
