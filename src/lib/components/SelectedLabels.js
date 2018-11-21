@@ -1,20 +1,15 @@
-import PropTypes from "prop-types";
-import React from "react";
-import Label from "./Label";
+import PropTypes from 'prop-types';
+import React from 'react';
+import Label from './Label';
 
-const SelectedLabels = ({
-  selectedLabels,
-  hasError,
-  onRemove,
-  removeText
-}) => {
+const SelectedLabels = ({ selectedLabels, hasError, onRemove, removeText }) => {
   const nonMandatoryProps = {
     hasError,
     onRemove,
-    removeText
+    removeText,
   };
-  return selectedLabels.map(label => (
-    <Label key={label.id} value={label.value} title={label.title} {...nonMandatoryProps} />
+  return selectedLabels.map((label, index) => (
+    <Label key={index} value={label.value} title={label.title} {...nonMandatoryProps} />
   ));
 };
 
@@ -24,9 +19,12 @@ SelectedLabels.propTypes = {
   hasError: PropTypes.any,
   onRemove: PropTypes.any,
   removeText: PropTypes.any,
-  selectedLabels: PropTypes.shape({
-    id: PropTypes.any.isRequired,
-    value: PropTypes.string.isRequired
-  }).isRequired,
-  title: PropTypes.any
+  selectedLabels: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.any,
+      value: PropTypes.string.isRequired,
+      title: PropTypes.string,
+    })
+  ).isRequired,
+  title: PropTypes.any,
 };

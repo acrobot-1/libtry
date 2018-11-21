@@ -1,9 +1,9 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Label extends PureComponent {
   get removeText() {
-    return this.props.removeText ? this.props.removeText : "✖";
+    return this.props.removeText ? this.props.removeText : '✖';
   }
 
   get showRemoveButton() {
@@ -13,9 +13,8 @@ export default class Label extends PureComponent {
   render() {
     return (
       <span
-        key={this.props.key}
         title={this.props.title && this.props.title}
-        className={`selected-label${!!this.props.hasError && " error"}`}
+        className={`selected-label${!!this.props.hasError && ' error'}`}
       >
         {this.props.value}
         {this.showRemoveButton && (
@@ -30,9 +29,8 @@ export default class Label extends PureComponent {
 
 Label.propTypes = {
   hasError: PropTypes.bool,
-  key: PropTypes.any.isRequired,
   onRemove: PropTypes.func,
   removeText: PropTypes.string,
   title: PropTypes.string,
-  value: PropTypes.string.isRequired
+  value: PropTypes.string.isRequired,
 };
