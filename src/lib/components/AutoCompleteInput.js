@@ -6,17 +6,19 @@ export default class AutoCompleteInput extends Component {
   constructor(props) {
     super(props);
     this.state = { suggestions: props.suggestions };
-    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
   }
 
   componentDidUpdate(prevProps) {
     if (this.props.value !== prevProps.value) this.setState({ suggestions: this.props.suggestions });
   }
 
-  handleKeyDown(e) {
+  handleKeyUp(e) {
     if (this.props.delimiters.indexOf(e.keyCode) !== -1 && !e.shiftKey) {
-      const selectedValue = this.props.value;
-      this.props.onSelect({ value: selectedValue });
+      let selectedValue = this.props.value;
+      // by right it should be key in the range of 48 - 90
+      if (e.keyCode === KEYS.COMMA) selectedValue = selectedValue.substr(0, selectedValue.length - 1);
+      if (selectedValue) this.props.onSelect({ value: selectedValue });
     }
     if (e.keyCode === KEYS.BACKSPACE && this.props.value === '') {
       this.props.onRemove && this.props.onRemove(this.props.lastSelectedLabelsIndex);
@@ -31,7 +33,7 @@ export default class AutoCompleteInput extends Component {
           value={this.props.value}
           placeholder={this.props.placeholder && this.props.placeholder}
           onChange={e => this.props.onChange(e.target.value)}
-          onKeyDown={this.handleKeyDown}
+          onKeyUp={this.handleKeyUp}
         />
         {this.props.suggestions.length > 0 && (
           <ul className="suggestions">
