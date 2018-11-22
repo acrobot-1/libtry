@@ -8,7 +8,8 @@ export default class App extends PureComponent {
     super();
     this.state = {
       value: '',
-      selectedLabels: [{ id: 1, value: 'yoyoyoyo', title: 'wow wow' }],
+      selectedLabels: [{ value: 'yoyoyoyo', title: 'wow wow' }],
+      suggestions: [{ value: 'mvi@accordium.com', caption: 'test caption' }, { value: 'virandry@gmail.com', caption: 'Virandry' }],
     };
     this.onChange = this.onChange.bind(this);
     this.onSelect = this.onSelect.bind(this);
@@ -31,11 +32,13 @@ export default class App extends PureComponent {
     });
   }
 
-  onSelect({ value, id, title }) {
+  onSelect({ value, title }) {
+    console.log(value, title);
     this.setState(prevState => {
-      const selectedLabels = prevState.selectedLabels;
-      selectedLabels.push({ value, id, title });
-      return { selectedLabels, value: '' };
+      const selectedLabels = prevState.selectedLabels.slice();
+      selectedLabels.push({ value, title });
+      console.log(selectedLabels);
+      return { selectedLabels, suggestions: [], value: '' };
     });
   }
 
@@ -49,6 +52,7 @@ export default class App extends PureComponent {
           onRemove={this.onRemove}
           lastSelectedLabelsIndex={this.lastSelectedLabelsIndex}
           value={this.state.value}
+          suggestions={this.state.suggestions}
         />
       </LabelContainer>
     );

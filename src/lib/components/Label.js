@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class Label extends PureComponent {
+export default class Label extends Component {
   get removeText() {
     return this.props.removeText ? this.props.removeText : '✖';
   }

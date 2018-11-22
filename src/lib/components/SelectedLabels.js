@@ -1,19 +1,19 @@
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import React from 'react';
 import Label from './Label';
 
-const SelectedLabels = ({ selectedLabels, hasError, onRemove, removeText }) => {
-  const nonMandatoryProps = {
-    hasError,
-    onRemove,
-    removeText,
-  };
-  return selectedLabels.map((label, index) => (
-    <Label key={index} labelIndex={index} value={label.value} title={label.title} {...nonMandatoryProps} />
-  ));
-};
-
-export default SelectedLabels;
+export default class SelectedLabels extends Component {
+  render() {
+    const nonMandatoryProps = {
+      hasError: this.props.hasError,
+      onRemove: this.props.onRemove,
+      removeText: this.props.removeText,
+    };
+    return this.props.selectedLabels.map((label, index) => (
+      <Label key={index} labelIndex={index} value={label.value} title={label.title} {...nonMandatoryProps} />
+    ));
+  }
+}
 
 SelectedLabels.propTypes = {
   hasError: PropTypes.any,
