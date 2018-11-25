@@ -8,9 +8,34 @@ export default class AutoCompleteInput extends Component {
     this.state = { activeIndex: null };
     this.handleKeyUp = this.handleKeyUp.bind(this);
     this.onSuggestionSelect = this.onSuggestionSelect.bind(this);
+    this.inputRef = React.createRef();
+    this.utilDivRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.tmpInputWidth = this.utilDivRef.current.clientWidth; // in px
+  }
+
+  get inputWrapperStyle() {
+    if (this.props.lastRowWidth) {
+      return { width: `calc(100% - ${this.props.lastRowWidth + 10}px)`, minWidth: `${this.props.inputMinWidth}px` };
+    }
+    return { minWidth: `${this.props.inputMinWidth}px` };
+  }
+
+  get utilDivStyle() {
+    return {
+      position: 'absolute',
+      visibility: 'hidden',
+      height: 'auto',
+      width: 'auto',
+      whiteSpace: 'nowrap',
+      pointerEvents: 'none',
+    };
   }
 
   handleKeyUp(e) {
+    this.tmpInputWidth = this.utilDivRef.current.clientWidth; // in px
     console.log(this.state.activeIndex);
     if (e.keyCode === KEYS.ENTER && this.state.activeIndex !== null) {
       const selectedSuggestion = this.props.suggestions[this.state.activeIndex];
@@ -59,22 +84,28 @@ export default class AutoCompleteInput extends Component {
   }
 
   onSuggestionSelect(suggestion) {
-    this.props.onSelect({ value: suggestion.value, title: suggestion.caption });
+    this.props.onSelect({ value: suggestion.value, title: suggestion.name });
     this.setState({ activeIndex: null });
   }
 
   render() {
     return (
       <Fragment>
-        <div className="auto-complete-input wrapper">
+        <div className="auto-complete-input wrapper" style={this.inputWrapperStyle}>
           <input
+            ref={this.inputRef}
+            id={this.props.inputId}
             type="text"
+            className={`input-field${!!this.props.error ? ' error' : ''}`}
             value={this.props.value}
             placeholder={this.props.placeholder && this.props.placeholder}
             onChange={e => this.props.onChange(e.target.value)}
             onKeyUp={this.handleKeyUp}
             onBlur={() => this.setState({ activeIndex: null })}
           />
+          <div ref={this.utilDivRef} className="input-field" style={this.utilDivStyle}>
+            {this.props.value}
+          </div>
         </div>
         {this.props.suggestions.length > 0 && (
           <ul className="suggestions">
@@ -90,8 +121,8 @@ export default class AutoCompleteInput extends Component {
                       <img className="suggestion-avatar" src={suggestion.avatarUrl} alt={suggestion.value} />
                     </div>
                   )}
-                  <div className="suggestion-value">{suggestion.value}</div>
-                  {suggestion.caption && <div className="suggestion-caption">{suggestion.caption}</div>}
+                  <div className="suggestion-name">{suggestion.name}</div>
+                  {suggestion.value && <div className="suggestion-value">{suggestion.value}</div>}
                 </li>
               ),
               this
@@ -105,13 +136,17 @@ export default class AutoCompleteInput extends Component {
 
 AutoCompleteInput.propTypes = {
   delimiters: PropTypes.array,
+  error: PropTypes.bool,
+  inputId: PropTypes.string,
+  inputMinWidth: PropTypes.number,
+  lastRowWidth: PropTypes.number,
+  lastSelectedLabelsIndex: PropTypes.number,
   onChange: PropTypes.func.isRequired,
-  onSelect: PropTypes.func.isRequired,
   onRemove: PropTypes.func,
+  onSelect: PropTypes.func.isRequired,
   placeholder: PropTypes.string,
   suggestions: PropTypes.array,
   value: PropTypes.string.isRequired,
-  lastSelectedLabelsIndex: PropTypes.number,
 };
 
 AutoCompleteInput.defaultProps = {
@@ -119,4 +154,6 @@ AutoCompleteInput.defaultProps = {
   delimiters: [KEYS.ENTER, KEYS.COMMA],
   suggestions: [],
   placeholder: '',
+  inputId: 'auto-input-field',
+  inputMinWidth: 150,
 };

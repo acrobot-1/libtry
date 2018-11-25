@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 var TextInput = function TextInput(_ref) {
   var _ref$type = _ref.type,

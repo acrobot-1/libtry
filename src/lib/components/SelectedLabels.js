@@ -8,6 +8,7 @@ export default class SelectedLabels extends Component {
       hasError: this.props.hasError,
       onRemove: this.props.onRemove,
       removeText: this.props.removeText,
+      labelClassNames: this.props.labelClassNames,
     };
     return this.props.selectedLabels.map((label, index) => (
       <Label key={index} labelIndex={index} value={label.value} title={label.title} {...nonMandatoryProps} />
@@ -17,14 +18,11 @@ export default class SelectedLabels extends Component {
 
 SelectedLabels.propTypes = {
   hasError: PropTypes.any,
+  labelClassNames: PropTypes.string,
   onRemove: PropTypes.any,
   removeText: PropTypes.any,
   selectedLabels: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.any,
-      value: PropTypes.string.isRequired,
-      title: PropTypes.string,
-    })
+    PropTypes.shape({ id: PropTypes.any, value: PropTypes.string.isRequired, title: PropTypes.string })
   ).isRequired,
   title: PropTypes.any,
 };
