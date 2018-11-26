@@ -10,9 +10,7 @@ export function toSuggestions(list, { nameKey, valueKey }) {
 }
 
 export function getLastRowWidth(el) {
-  console.log('el: ', el);
   const containerWidth = el.clientWidth;
-  console.log('containerWidth: ', containerWidth);
   let childrenWidth = [];
   for (const child of el.childNodes) {
     // removing input and suggestions

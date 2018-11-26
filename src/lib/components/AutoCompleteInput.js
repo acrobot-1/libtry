@@ -18,6 +18,11 @@ export default class AutoCompleteInput extends Component {
 
   get inputWrapperStyle() {
     if (this.props.lastRowWidth) {
+      if (this.props.containerWidth) {
+        const inputWidthLimit = this.props.containerWidth * 0.2;
+        const inputWidth = this.props.containerWidth - (this.props.lastRowWidth + 10);
+        if (inputWidth < inputWidthLimit ) return { width: '100%', minWidth: `${this.props.inputMinWidth}px` };
+      }
       return { width: `calc(100% - ${this.props.lastRowWidth + 10}px)`, minWidth: `${this.props.inputMinWidth}px` };
     }
     return { minWidth: `${this.props.inputMinWidth}px` };
@@ -36,10 +41,8 @@ export default class AutoCompleteInput extends Component {
 
   handleKeyUp(e) {
     this.tmpInputWidth = this.utilDivRef.current.clientWidth; // in px
-    console.log(this.state.activeIndex);
     if (e.keyCode === KEYS.ENTER && this.state.activeIndex !== null) {
       const selectedSuggestion = this.props.suggestions[this.state.activeIndex];
-      console.log('selectedSuggestion: ', selectedSuggestion);
       this.props.onSelect({ value: selectedSuggestion.value, title: selectedSuggestion.caption });
       this.setState({ activeIndex: null });
       return;
@@ -135,6 +138,7 @@ export default class AutoCompleteInput extends Component {
 }
 
 AutoCompleteInput.propTypes = {
+  containerWidth: PropTypes.number,
   delimiters: PropTypes.array,
   error: PropTypes.bool,
   inputId: PropTypes.string,
@@ -156,4 +160,5 @@ AutoCompleteInput.defaultProps = {
   placeholder: '',
   inputId: 'auto-input-field',
   inputMinWidth: 150,
+  containerWidth: 0,
 };
