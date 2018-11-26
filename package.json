@@ -2,6 +2,9 @@
   "name": "react-auto-complete-label",
   "description": "Auto-complete and label tagging for React",
   "version": "0.1.0",
+  "homepage": "https://www.accordium.com",
+  "author": "Mohammad Virandry",
+  "license": "MIT",
   "dependencies": {},
   "scripts": {
     "start": "react-scripts start",
